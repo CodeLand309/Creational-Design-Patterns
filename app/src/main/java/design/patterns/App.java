@@ -8,16 +8,34 @@ import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemAppleF
 import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemGoogleFactory;
 import design.patterns.builder_design.AbstractSmartphone;
 import design.patterns.builder_design.SmartphoneBuilder;
+import design.patterns.factory_design.AvailableOS;
+import design.patterns.factory_design.IOperatingSystem;
+import design.patterns.factory_design.OperatingSystemFactory;
 
 public class App {
 
     public static void main(String[] args) {
-        
 
-        //1. Builder Design Pattern
+        /* 1. Builder Design Pattern
+         * This pattern is useful when the class has so many properties. 
+         * With builder design pattern, developer does not have to worry
+         * about the order of parameters passed in the constructor instead
+         * Setters are used for that.
+         */
         builderDesignPattern();
 
-        //2. Abstract Factory Method
+        /* 2. Factory Design
+         * The task of creating an object is taken from client and assigned
+         * to Factory class. Factory class will produce object based on the
+         * client requirement.
+         */
+        factoryDesignPattern(); 
+
+        /* 3. Abstract Factory Design
+         * This is similar to factory design but there is a small difference.
+         * Used when we need to create a set of objects which come under a
+         * paticular group/family.
+         */
         abstractFactoryDesignPattern();
     }
 
@@ -56,6 +74,18 @@ public class App {
         System.out.println("Customer: I love Apple Ecosystem");
         Ecosystem ecosystem2 = new Ecosystem(new EcosystemAppleFactory());
         System.out.println(ecosystem2.toString());
+    }
+
+    public static void factoryDesignPattern(){
+        System.out.println("Customer: I want a highly customizable OS");
+        IOperatingSystem operatingSystem1 = new OperatingSystemFactory().developOS(AvailableOS.ANDROID);
+        operatingSystem1.bootUp();
+        System.out.println("Customer: I want a premium OS experience");
+        IOperatingSystem operatingSystem2 = new OperatingSystemFactory().developOS(AvailableOS.IOS);
+        operatingSystem2.bootUp();
+        System.out.println("Customer: I want to try some other OS");
+        IOperatingSystem operatingSystem3 = new OperatingSystemFactory().developOS(AvailableOS.BLACKBERRY);
+        operatingSystem3.bootUp();
     }
 
 }
