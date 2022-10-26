@@ -3,6 +3,9 @@
  */
 package design.patterns;
 
+import design.patterns.abstract_factory_design.Ecosystem;
+import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemAppleFactory;
+import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemGoogleFactory;
 import design.patterns.builder_design.AbstractSmartphone;
 import design.patterns.builder_design.SmartphoneBuilder;
 
@@ -10,7 +13,17 @@ public class App {
 
     public static void main(String[] args) {
         
-        //Builder Design Pattern
+
+        //1. Builder Design Pattern
+        builderDesignPattern();
+
+        //2. Abstract Factory Method
+        abstractFactoryDesignPattern();
+    }
+
+    public static void builderDesignPattern(){
+        // \033[1m  \033[0m is for bold text. Not important
+        System.out.println("\n\033[1mBuilder Design Pattern\033[0m");
         System.out.println("Customer: I need a Samsung phone");
         AbstractSmartphone smartphone1 = new SmartphoneBuilder()
             .setCamera(50)
@@ -20,7 +33,7 @@ public class App {
             .setStorage(128)
             .setName("S22")
             .getSmartphone("Samsung");
-            System.out.println(smartphone1.makeCall("98123213"));
+            System.out.println("Make Call Operation: " + smartphone1.makeCall("98123213"));
 
         System.out.println("Customer: I need an iPhone");
         AbstractSmartphone smartphone2 = new SmartphoneBuilder()
@@ -31,6 +44,18 @@ public class App {
             .setStorage(128)
             .setName("14 pro")
             .getSmartphone("iPhone");
-            System.out.println(smartphone2.sendSMS("98123213", "Hi"));
+            System.out.println("Send SMS Operation: " + smartphone2.sendSMS("98123213", "Hi"));
     }
+
+    public static void abstractFactoryDesignPattern(){
+        System.out.println("\n\033[1mAbstract Factory Design Pattern\033[0m");
+        System.out.println("Customer: I love Google Ecosystem");
+        Ecosystem ecosystem1 = new Ecosystem(new EcosystemGoogleFactory());
+        System.out.println(ecosystem1.toString());
+
+        System.out.println("Customer: I love Apple Ecosystem");
+        Ecosystem ecosystem2 = new Ecosystem(new EcosystemAppleFactory());
+        System.out.println(ecosystem2.toString());
+    }
+
 }

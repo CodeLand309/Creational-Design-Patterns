@@ -2,6 +2,8 @@ package design.patterns.builder_design;
 
 public class SmartphoneSamsung extends AbstractSmartphone {
 
+    //Samsung Smartphone
+
     public int getRam() {
         return ram;
     }

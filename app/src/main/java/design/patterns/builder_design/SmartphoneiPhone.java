@@ -1,6 +1,8 @@
 package design.patterns.builder_design;
 
 public class SmartphoneiPhone extends AbstractSmartphone {
+
+    //iPhone Smartphone
     
     public static String getBrand() {
         return brand;
