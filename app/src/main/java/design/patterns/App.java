@@ -11,38 +11,62 @@ import design.patterns.builder_design.SmartphoneBuilder;
 import design.patterns.factory_design.AvailableOS;
 import design.patterns.factory_design.IOperatingSystem;
 import design.patterns.factory_design.OperatingSystemFactory;
+import design.patterns.prototype_design.AbstractPrototypeRegistry;
+import design.patterns.prototype_design.PrototypeRegistryImpl;
+import design.patterns.prototype_design.energy_source.Battery;
+import design.patterns.prototype_design.vehicle.Bike;
+import design.patterns.prototype_design.vehicle.IVehicle;
+import design.patterns.prototype_design.vehicle_transmission.AutomaticTransmission;
+import design.patterns.prototype_design.vehicle_type.ElectricVehicle;
 
 public class App {
 
     public static void main(String[] args) {
 
-        /* 1. Builder Design Pattern
+        /* 1. Builder Design Pattern *
          * This pattern is useful when the class has so many properties. 
          * With builder design pattern, developer does not have to worry
          * about the order of parameters passed in the constructor instead
          * Setters are used for that.
          */
+        // \033[1m  \033[0m is for bold text. Not important
+        System.out.println("\n\033[1mBuilder Design Pattern\033[0m");
         builderDesignPattern();
 
-        /* 2. Factory Design
+        /* 2. Factory Design *
          * The task of creating an object is taken from client and assigned
          * to Factory class. Factory class will produce object based on the
          * client requirement.
          */
+        System.out.println("\n\033[1mFactory Design Pattern\033[0m");
         factoryDesignPattern(); 
 
-        /* 3. Abstract Factory Design
+        /* 3. Abstract Factory Design *
          * This is similar to factory design but there is a small difference.
          * Used when we need to create a set of objects which come under a
          * paticular group/family.
          */
+        System.out.println("\n\033[1mAbstract Factory Design Pattern\033[0m");
         abstractFactoryDesignPattern();
+
+        /* 4. Prototype Design Pattern *
+         * This is used particularly when object creation is a complex process
+         * involing lot of configurations. So it would be better to get the
+         * properties/configuration from exisiting object(prototype) and setting
+         * it to the new object.
+         * 
+         * I have implemented in both ways:
+         * Without Prototype Registry (Client has to create prototype then it could be cloned)
+         * With Prototype Registry (Client does not have to construct prototype but can add new prototype)
+         */
+        System.out.println("\n\033[1mPrototype Design Pattern\033[0m");
+        prototypeDesignPatternWithRegistry();
+        prototypeDesignPatternWithoutRegistry();
+
     }
 
     public static void builderDesignPattern(){
-        // \033[1m  \033[0m is for bold text. Not important
-        System.out.println("\n\033[1mBuilder Design Pattern\033[0m");
-        System.out.println("Customer: I need a Samsung phone");
+        System.out.println("Customer 1: I need a Samsung phone");
         AbstractSmartphone smartphone1 = new SmartphoneBuilder()
             .setCamera(50)
             .setCpu("Snapdragon 695")
@@ -53,7 +77,7 @@ public class App {
             .getSmartphone("Samsung");
             System.out.println("Make Call Operation: " + smartphone1.makeCall("98123213"));
 
-        System.out.println("Customer: I need an iPhone");
+        System.out.println("Customer 2: I need an iPhone");
         AbstractSmartphone smartphone2 = new SmartphoneBuilder()
             .setCamera(48)
             .setCpu("A16 Bionic")
@@ -66,26 +90,77 @@ public class App {
     }
 
     public static void abstractFactoryDesignPattern(){
-        System.out.println("\n\033[1mAbstract Factory Design Pattern\033[0m");
-        System.out.println("Customer: I love Google Ecosystem");
+        System.out.println("Customer 1: I love Google Ecosystem");
         Ecosystem ecosystem1 = new Ecosystem(new EcosystemGoogleFactory());
         System.out.println(ecosystem1.toString());
 
-        System.out.println("Customer: I love Apple Ecosystem");
+        System.out.println("Customer 2: I love Apple Ecosystem");
         Ecosystem ecosystem2 = new Ecosystem(new EcosystemAppleFactory());
         System.out.println(ecosystem2.toString());
     }
 
     public static void factoryDesignPattern(){
-        System.out.println("Customer: I want a highly customizable OS");
+        System.out.println("Customer 1: I want a highly customizable OS");
         IOperatingSystem operatingSystem1 = new OperatingSystemFactory().developOS(AvailableOS.ANDROID);
-        operatingSystem1.bootUp();
-        System.out.println("Customer: I want a premium OS experience");
+        System.out.println(operatingSystem1.bootUp());
+        System.out.println("Customer 2: I want a premium OS experience");
         IOperatingSystem operatingSystem2 = new OperatingSystemFactory().developOS(AvailableOS.IOS);
-        operatingSystem2.bootUp();
-        System.out.println("Customer: I want to try some other OS");
+        System.out.println(operatingSystem2.bootUp());
+        System.out.println("Customer 3: I want to try some other OS");
         IOperatingSystem operatingSystem3 = new OperatingSystemFactory().developOS(AvailableOS.BLACKBERRY);
-        operatingSystem3.bootUp();
+        System.out.println(operatingSystem3.bootUp());
+    }
+
+    public static void prototypeDesignPatternWithRegistry(){
+        /* With Prototype Registry *
+         * Here First we are creating an instance of PrototypeRegistry to set bundledVehicles
+         * Now we can search for vehicles. Cloning is done by the Prototype Registry. Client
+         * will get a vehicle object if the provided requiement is correct.
+         * 
+         * Also another good thing is that client is not directly creating the object.
+         */
+        System.out.println("\033[1mWith Prototype Registry\033[0m");
+        AbstractPrototypeRegistry prototypeRegistry = new PrototypeRegistryImpl();
+        prototypeRegistry.bundledVehicles();
+
+        IVehicle vehicle3 = prototypeRegistry.getVehicle("ELECTRIC_CAR_MANUAL");
+        if(vehicle3!=null){
+            vehicle3.startVehicle();
+            System.out.println(vehicle3.toString());
+        }
+
+        System.out.println("");
+        IVehicle vehicle4 = prototypeRegistry.getVehicle("ELECTRIC_CAR_MANUAL");
+        if(vehicle4!=null){
+            vehicle4.startVehicle();
+            System.out.println(vehicle4.toString());
+        }
+    }
+
+
+    public static void prototypeDesignPatternWithoutRegistry(){
+        //Without Prototype Registry
+        /* Vehicle needs transmission type(auto/manual) and vehicle type(electric/manual). 
+         * Vehicle type needs co2 emissions and energy source(petrol/battery).
+         * Energy Source needs costPerkm and particular energy source variantion (battery type/petrol type).
+         */
+
+        System.out.println("\n\033[1mWithout Prototype Registry\033[0m");
+        System.out.println("Customer 1: I need an electric scooter");
+        IVehicle vehicle1 = new Bike(new AutomaticTransmission(), 
+            new ElectricVehicle("less", new Battery(2, "Lithium Ion")));
+            vehicle1.startVehicle();
+        System.out.println(vehicle1.toString());
+        System.out.println("");
+
+        /*
+         * Since customer 2 also has same vehicle requirement. We don't have to go for new Vehicle Design.
+         * We can build a vehicle from existing prototype/design.
+         */
+        System.out.println("Customer 2: I also need an electric scooter");
+        IVehicle vehicle2 = vehicle1.cloneVehicle();
+        vehicle2.startVehicle();
+        System.out.println(vehicle2.toString());
     }
 
 }
