@@ -18,6 +18,7 @@ import design.patterns.prototype_design.vehicle.Bike;
 import design.patterns.prototype_design.vehicle.IVehicle;
 import design.patterns.prototype_design.vehicle_transmission.AutomaticTransmission;
 import design.patterns.prototype_design.vehicle_type.ElectricVehicle;
+import design.patterns.singleton_design.Singleton;
 
 public class App {
 
@@ -63,7 +64,19 @@ public class App {
         prototypeDesignPatternWithRegistry();
         prototypeDesignPatternWithoutRegistry();
 
+        /* 5. Singleton Design Pattern *
+         * Ensures that there is always a single instance of a class
+         * and all the object references access the same instance.
+         * 
+         * Here I have implemented Singleton for single thread. This may
+         * not work as expected in multi-threaded environment (Race condition).
+         * We need to use synchronization to solve this issue.
+         */
+        System.out.println("\n\033[1mSingleton Design Pattern\033[0m");    
+        singletonDesignPattern();    
     }
+
+
 
     public static void builderDesignPattern(){
         System.out.println("Customer 1: I need a Samsung phone");
@@ -99,6 +112,8 @@ public class App {
         System.out.println(ecosystem2.toString());
     }
 
+
+
     public static void factoryDesignPattern(){
         System.out.println("Customer 1: I want a highly customizable OS");
         IOperatingSystem operatingSystem1 = new OperatingSystemFactory().developOS(AvailableOS.ANDROID);
@@ -110,6 +125,8 @@ public class App {
         IOperatingSystem operatingSystem3 = new OperatingSystemFactory().developOS(AvailableOS.BLACKBERRY);
         System.out.println(operatingSystem3.bootUp());
     }
+
+
 
     public static void prototypeDesignPatternWithRegistry(){
         /* With Prototype Registry *
@@ -138,6 +155,7 @@ public class App {
     }
 
 
+
     public static void prototypeDesignPatternWithoutRegistry(){
         //Without Prototype Registry
         /* Vehicle needs transmission type(auto/manual) and vehicle type(electric/manual). 
@@ -161,6 +179,22 @@ public class App {
         IVehicle vehicle2 = vehicle1.cloneVehicle();
         vehicle2.startVehicle();
         System.out.println(vehicle2.toString());
+    }
+
+
+
+    public static void singletonDesignPattern(){
+        /* Below line will give compilation error as we restricted 
+         * the object creation responsibility to Singleton class
+         * 
+         * There could be many references but all point to same
+         * instance.
+         */
+        //Singleton single = new Singleton();
+        Singleton obj1 = Singleton.getSingleton();
+        System.out.println(obj1.toString());
+        Singleton obj2 = Singleton.getSingleton();
+        System.out.println(obj2.toString());
     }
 
 }
