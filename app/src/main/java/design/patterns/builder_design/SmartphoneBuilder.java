@@ -9,22 +9,52 @@ public class SmartphoneBuilder {
      * setting brandName when creating the smartphone 
      * in the getSmartphone
      */
-    private int ram;
-    private int storage;
+
+    /* Use Wrapper classes instead of primitives when 
+     * certain properties are optional.
+     * Specify Default values if certain fields are required.
+     */
+
+    private int ram=4; //minimum ram should be 4GB and storage should be 64GB we can specify default values
+    private int storage=64;
     private String cpu;
     private float displaySize;
     private int camera;
     private String name;
 
+    public int getRam(){
+        return ram;
+    }
+
+    public int getStorage(){
+        return storage;
+    }
+
+    public String getCpu(){
+        return cpu;
+    }
+
+    public float getDisplaySize(){
+        return displaySize;
+    }
+
+    public int getCamera(){
+        return camera;
+    }
+
+    public String getName(){
+        return name;
+    }
+
     /*
      * Single Getter which creates Smartphone of provided brand 
      * with provided Smartphone properties. 
      */
-    public AbstractSmartphone getSmartphone(String brandName) {
+    public AbstractSmartphone build(String brandName) {
         if("Samsung".equals(brandName))
-            smartphone = new SmartphoneSamsung(ram, storage, cpu, displaySize, camera, name, brandName);
+            smartphone = new SmartphoneSamsung(this);
         else if("iPhone".equals(brandName))
-            smartphone = new SmartphoneiPhone(ram, storage, cpu, displaySize, camera, name, brandName);
+            smartphone = new SmartphoneiPhone(this);
         return smartphone;
     }
 

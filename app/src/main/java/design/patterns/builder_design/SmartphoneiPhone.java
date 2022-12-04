@@ -3,9 +3,13 @@ package design.patterns.builder_design;
 public class SmartphoneiPhone extends AbstractSmartphone {
 
     //iPhone Smartphone
+    /* Brand is set as static because Brand name is common 
+     * for smartphones released by the same brand
+     */
+    static String brandName="iPhone";
     
     public static String getBrand() {
-        return brand;
+        return brandName;
     }
 
     public int getRam() {
@@ -32,14 +36,13 @@ public class SmartphoneiPhone extends AbstractSmartphone {
         return name;
     }
 
-    public SmartphoneiPhone(int ram, int storage, String cpu, float displaySize, int camera, String name, String brandName) {
-        this.ram = ram;
-        this.storage = storage;
-        this.cpu = cpu;
-        this.displaySize = displaySize;
-        this.camera = camera;
-        this.name = name;
-        brand = brandName;
+    public SmartphoneiPhone(SmartphoneBuilder smartphoneBuilder) {
+        this.ram = smartphoneBuilder.getRam();
+        this.storage = smartphoneBuilder.getStorage();
+        this.cpu = smartphoneBuilder.getCpu();
+        this.displaySize = smartphoneBuilder.getDisplaySize();
+        this.camera = smartphoneBuilder.getCamera();
+        this.name = smartphoneBuilder.getName();
     }
 
     @Override

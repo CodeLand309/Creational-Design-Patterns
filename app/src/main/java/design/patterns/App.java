@@ -6,8 +6,7 @@ package design.patterns;
 import design.patterns.abstract_factory_design.Ecosystem;
 import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemAppleFactory;
 import design.patterns.abstract_factory_design.ecosystem_factory.EcosystemGoogleFactory;
-import design.patterns.builder_design.AbstractSmartphone;
-import design.patterns.builder_design.SmartphoneBuilder;
+import design.patterns.builder_design.SimpleSmartphone;
 import design.patterns.factory_design.AvailableOS;
 import design.patterns.factory_design.IOperatingSystem;
 import design.patterns.factory_design.OperatingSystemFactory;
@@ -29,6 +28,14 @@ public class App {
          * With builder design pattern, developer does not have to worry
          * about the order of parameters passed in the constructor instead
          * Setters are used for that.
+         * 
+         * Also, if there are many ways of creating instance by using a subset
+         * of mandatory properties of class. Then developer has to define constructors
+         * for all the possible combination and client needs to know which constructor
+         * to use. 
+         * 
+         * Its important to know how builder pattern works but Lombok library helps us
+         * to directly create a builder with single annotation.
          */
         // \033[1m  \033[0m is for bold text. Not important
         System.out.println("\n\033[1mBuilder Design Pattern\033[0m");
@@ -79,28 +86,44 @@ public class App {
 
 
     public static void builderDesignPattern(){
+
+        /*
+         * Previously I had used an Abstract class and separate implementation 
+         * for each brand. There was separate builder class. But I feel that
+         * Builder class does not have to exist outside the smartphone class. So I have
+         * created a new Class called SimpleSmartphone. Refer this class for knowing more about builder
+         * pattern. This is much simpler compared to the previous implementation of Builder pattern.
+         * 
+         * Previous classes are also available in the same package for reference but go for
+         * the simple approach.
+         */
+
         System.out.println("Customer 1: I need a Samsung phone");
-        AbstractSmartphone smartphone1 = new SmartphoneBuilder()
+        SimpleSmartphone smartphone1 = new SimpleSmartphone.SmartphoneBuilder()
             .setCamera(50)
             .setCpu("Snapdragon 695")
             .setDisplaySize(6.1f)
             .setRam(8)
             .setStorage(128)
             .setName("S22")
-            .getSmartphone("Samsung");
-            System.out.println("Make Call Operation: " + smartphone1.makeCall("98123213"));
+            .setBrandName("Samsung")
+            .build();
+        System.out.println("Make Call Operation: " + smartphone1.makeCall("98123213"));
 
         System.out.println("Customer 2: I need an iPhone");
-        AbstractSmartphone smartphone2 = new SmartphoneBuilder()
+        SimpleSmartphone smartphone2 = new SimpleSmartphone.SmartphoneBuilder()
             .setCamera(48)
             .setCpu("A16 Bionic")
             .setDisplaySize(6.1f)
             .setRam(6)
             .setStorage(128)
             .setName("14 pro")
-            .getSmartphone("iPhone");
-            System.out.println("Send SMS Operation: " + smartphone2.sendSMS("98123213", "Hi"));
+            .setBrandName("iPhone")
+            .build();
+        System.out.println("Send SMS Operation: " + smartphone2.sendSMS("98123213", "Hi"));
     }
+
+    
 
     public static void abstractFactoryDesignPattern(){
         System.out.println("Customer 1: I love Google Ecosystem");
